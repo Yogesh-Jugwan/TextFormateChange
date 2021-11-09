@@ -4,10 +4,12 @@ export default function TextFormChange(props) {
     const hendleUpChange = () => {
         let newText = text.toUpperCase();
         setText(newText);
+        props.showAlert("Converted to uppercase!", "success");
     }
     const hendleLowChange = () => {
         let newText = text.toLowerCase();
         setText(newText);
+        props.showAlert("Converted to lowercase!", "success");
     }
     const hendleCpChange = () => {
         if (text==="") {
@@ -15,25 +17,35 @@ export default function TextFormChange(props) {
         }
         let newText =text[0].toUpperCase()+text.toLowerCase().slice(1);
         setText(newText);
+        props.showAlert("Text Capitalize!", "success");
+
     }
     const copyText = () =>{
         let newText = document.getElementById("myText");
         navigator.clipboard.writeText(newText.value);
+        props.showAlert("Copied to Clipboard!", "success");
     }
     const hendleClear = () => {
         let newText = '';
         setText(newText);
+        props.showAlert("Text Cleared!", "success");
     }
     const hendleOnchang = (event) => {
         setText(event.target.value);
     }
     
+    const handleExtraSpaces = ()=>{
+        let newText = text.split(/[ ]+/);
+        setText(newText.join(" "));
+        props.showAlert("Extra spaces removed!", "success");
+    }
     const [text, setText] = useState('');
     return (
         <>
 
             <div className="container" style={{color:props.mode==='dark'?'white':'black'}}>
                 <h1>{props.title}</h1>
+                <p>{props.heading}</p>
                 <div className="mb-3">
                     <textarea className="form-control" value={text} style={{background:props.mode==='dark'?'gray':'white',color:props.mode==='dark'?'white':'black'}} onChange={hendleOnchang} name="textarea" id="myText" cols="30" rows="10"></textarea>
                 </div>
@@ -42,6 +54,7 @@ export default function TextFormChange(props) {
                 <button className="btn btn-primary mx-2 my-2" onClick={hendleCpChange}>Capitalize</button>
                 <button className="btn btn-primary mx-2 my-2" onClick={hendleClear}>Clear</button>
                 <button className="btn btn-primary mx-2 my-2" onClick={copyText}>Text Copy</button>
+                <button className="btn btn-primary mx-2 my-2" onClick={handleExtraSpaces}>Remove Extra Spaces</button>
             </div>
             <div className="container my-2" style={{color:props.mode==='dark'?'white':'black'}}>
                 <p>Word Langth {text.split(" ").filter((element)=>{return element.length!==0}).length} and Characters Langth {text.length}</p>
